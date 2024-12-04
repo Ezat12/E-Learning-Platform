@@ -19,7 +19,7 @@ connectedDB();
 
 app.use(cors());
 app.use(compression());
-app.options("*", cors);
+app.options("*", cors());
 app.use(express.json());
 
 // Routes
