@@ -19,12 +19,13 @@ const { webhookCheckout } = require("./controllers/order-controller");
 connectedDB();
 
 app.use(cors());
-app.use(compression());
 app.options("*", cors());
-app.use(express.json());
-
+app.use(compression());
 
 app.post("/webhook-checkout", express.raw({ type: "application/json" }) , webhookCheckout);
+
+app.use(express.json());
+
 
 // Routes
 app.use("/api/v1/user", userRoute);
