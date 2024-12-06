@@ -99,7 +99,7 @@ const createOrder = async (session) => {
   if (!findStudentCourse) {
     const createStudentCourse = await StudentCourse.create({
       user: user._id,
-      courses: { course: courseId, dateOfPurchase: Date.now() },
+      courses: [{ course: courseId, dateOfPurchase: Date.now() }],
     });
     return res
       .status(200)
