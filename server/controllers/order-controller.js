@@ -4,6 +4,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KRY);
 const ApiError = require("../utils/apiError");
 const Course = require("../models/courseModel");
 const Order = require("../models/orderModel");
+const jsend = require("jsend");
 
 const getCheckoutSession = asyncErrorHandler(async (req, res, next) => {
   const idCourse = req.params.courseId;
@@ -36,6 +37,31 @@ const getCheckoutSession = asyncErrorHandler(async (req, res, next) => {
   res.status(200).json({ status: "success", data: session });
 });
 
+const webhookCheckout = asyncErrorHandler(async (req, res, next) => {
+  const sig = req.headers["stripe-signature"];
+
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig,
+      process.env.STRIPE_END_POINT_SECRET
+    );
+  } catch (err) {
+    res.status(400).send(`Webhook Error: ${err.message}`);
+    return;
+  }
+
+  if (event.type === "checkout.session.completed") {
+    console.log("Checkout complete");
+    res.status(200).json({ status: "success" });
+  } else {
+    return res.status(400).json({ status: "something error in checkout" });
+  }
+});
+
 module.exports = {
   getCheckoutSession,
+  webhookCheckout,
 };

@@ -13,6 +13,7 @@ const uploadRoute = require("./routes/uploadCloudinaryRoutes");
 const courseRoute = require("./routes/courseRoutes");
 const orderRoute = require("./routes/orderRoutes");
 const ApiError = require("./utils/apiError");
+const { webhookCheckout } = require("./controllers/order-controller");
 
 // Connected DB
 connectedDB();
@@ -21,6 +22,9 @@ app.use(cors());
 app.use(compression());
 app.options("*", cors());
 app.use(express.json());
+
+
+app.post("webhook-checkout", express.raw({ type: "application/json" }) , webhookCheckout);
 
 // Routes
 app.use("/api/v1/user", userRoute);
