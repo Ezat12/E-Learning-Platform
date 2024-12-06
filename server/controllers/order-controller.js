@@ -66,6 +66,7 @@ const webhookCheckout = asyncErrorHandler(async (req, res, next) => {
 });
 
 const createOrder = async (session) => {
+  console.log(session);
   const user = await User.findOne({ userEmail: session.customer_email });
   const courseId = session.client_reference_id;
   const price = session.amount_total / 100;
