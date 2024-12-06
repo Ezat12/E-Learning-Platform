@@ -53,10 +53,11 @@ const webhookCheckout = asyncErrorHandler(async (req, res, next) => {
     return;
   }
 
-  if (event.type === "checkout.session.completed") {
+  if (event.type == "checkout.session.completed") {
     console.log("Checkout complete");
     res.status(200).json({ status: "success" });
   } else {
+    console.log("checkout not completed");
     return res.status(400).json({ status: "something error in checkout" });
   }
 });
