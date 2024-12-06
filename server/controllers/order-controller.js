@@ -38,8 +38,6 @@ const getCheckoutSession = asyncErrorHandler(async (req, res, next) => {
 });
 
 const webhookCheckout = asyncErrorHandler(async (req, res, next) => {
-  console.log("webhook checkout");
-
   const sig = req.headers["stripe-signature"];
 
   let event;
@@ -51,18 +49,20 @@ const webhookCheckout = asyncErrorHandler(async (req, res, next) => {
       process.env.STRIPE_END_POINT_SECRET
     );
   } catch (err) {
-    console.log("error => ", err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
   if (event.type == "checkout.session.completed") {
-    console.log("Checkout complete");
+    createOrder(event.data.object);
     res.status(200).json({ status: "success" });
   } else {
-    console.log("checkout not completed");
     return res.status(400).json({ status: "something error in checkout" });
   }
 });
+
+const createOrder = (session) => {
+  console.log(session);
+};
 
 module.exports = {
   getCheckoutSession,
