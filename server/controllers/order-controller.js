@@ -58,7 +58,7 @@ const webhookCheckout = asyncErrorHandler(async (req, res, next) => {
   }
 
   if (event.type == "checkout.session.completed") {
-    createOrder(event.data.object);
+    await createOrder(event.data.object);
     res.status(200).json({ status: "success" });
   } else {
     return res.status(400).json({ status: "something error in checkout" });
