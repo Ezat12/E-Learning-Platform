@@ -9,7 +9,7 @@ const User = require("../models/userModel");
 const Order = require("../models/orderModel");
 const Course = require("../models/courseModel");
 const StudentCourse = require("../models/studentCoursesModel");
-const { updateUser } = require("./user-controller");
+// const { updateUser } = require("./user-controller");
 
 const getCheckoutSession = asyncErrorHandler(async (req, res, next) => {
   const idCourse = req.params.courseId;
