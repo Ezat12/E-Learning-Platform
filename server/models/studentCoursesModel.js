@@ -12,7 +12,7 @@ const schemaStudentCourses = new mongoose.Schema(
           type: mongoose.Schema.ObjectId,
           ref: "Course",
         },
-        dataOfPurchase: Date,
+        dateOfPurchase: Date,
       },
     ],
   },
