@@ -55,7 +55,7 @@ function Hero() {
                 <div className="rounded-md border" key={i}>
                   <img
                     width={"100%"}
-                    className="h-[340px]"
+                    className="h-[170px]"
                     src={course.courseImage}
                   />
                   <div className="p-2">

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { authLogin, authSignup } from "../Utils/Auth Utils/AuthUtils";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
+import { Hearts } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 
 function Auth() {
@@ -19,7 +20,7 @@ function Auth() {
 
   useEffect(() => {
     if (Cookies.get("auth-token")) {
-      navigator("/home");
+      navigator("/");
     }
   });
 
@@ -44,15 +45,22 @@ function Auth() {
       formData.password.length > 6;
 
     if (checkHandle) {
+      setLoading(true);
       try {
         const data = await authSignup(formData);
         Cookies.set("auth-token", data.token);
-
-        navigator("/home");
+        const role = data.user.role;
+        if (role === "user") {
+          window.location.href = "/";
+          window.location.reload();
+        } else {
+          navigator("/instructor");
+        }
       } catch (e) {
         const error = e.response.data.errors[0].msg;
         toast.error(error);
       }
+      setLoading(false);
     }
   };
 
@@ -63,16 +71,28 @@ function Auth() {
     const checkHandle = formData.password && formData.userEmail;
 
     if (checkHandle) {
+      setLoading(true);
       try {
         const data = await authLogin(formData);
         const role = data.user.role;
         Cookies.set("auth-token", data.token);
 
-        role === "user" ? navigator("/home") : navigator("/instructor");
+        if (role === "user") {
+          window.location.href = "/";
+          window.location.reload();
+        } else {
+          navigator("/instructor");
+        }
       } catch (e) {
-        const error = e.response.data.errors[0].msg;
+        let error;
+        if (e?.response?.data?.message) {
+          error = e.response.data.message;
+        } else {
+          error = e?.response?.data?.errors[0]?.msg;
+        }
         toast.error(error);
       }
+      setLoading(false);
     }
   };
 
@@ -180,18 +200,20 @@ function Auth() {
                 placeholder="Enter your password"
                 required
               />
-              {formData.password && formData.password.length < 7 && (
-                <p className="error bg-red-400 px-2 font-semibold rounded-md text-white mt-2">
-                  password must be more than 6 char
-                </p>
-              )}
+              {formData.password &&
+                formData.password.length < 7 &&
+                content === "Sign Up" && (
+                  <p className="error bg-red-400 px-2 font-semibold rounded-md text-white mt-2">
+                    password must be more than 6 char
+                  </p>
+                )}
             </div>
             <button
               onClick={content === "Sign Up" ? handleSignup : handleLogin}
               type="submit"
-              className="w-full py-2 bg-black text-white font-bold rounded-lg hover:bg-gray-800 focus:outline-none"
+              className="w-full py-2 flex items-center justify-center bg-black text-white font-bold rounded-lg hover:bg-gray-800 focus:outline-none"
             >
-              {content}
+              {loading ? <Hearts height={"30px"} color="#fff" /> : content}
             </button>
           </form>
         </div>

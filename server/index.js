@@ -12,6 +12,7 @@ const userAuth = require("./routes/authRoutes");
 const uploadRoute = require("./routes/uploadCloudinaryRoutes");
 const courseRoute = require("./routes/courseRoutes");
 const orderRoute = require("./routes/orderRoutes");
+const studentCourseRoute = require("./routes/studentCourseRoutes");
 const ApiError = require("./utils/apiError");
 const { webhookCheckout } = require("./controllers/order-controller");
 
@@ -22,15 +23,20 @@ app.use(cors());
 app.options("*", cors());
 app.use(compression());
 
-app.post("/webhook-checkout", express.raw({ type: "application/json" }) , webhookCheckout);
+app.post(
+  "/webhook-checkout",
+  express.raw({ type: "application/json" }),
+  webhookCheckout
+);
 
 app.use(express.json());
-
 
 // Routes
 app.use("/api/v1/user", userRoute);
 
 app.use("/api/v1", userAuth);
+
+app.use("/api/v1", studentCourseRoute);
 
 app.use("/api/v1/course", courseRoute);
 

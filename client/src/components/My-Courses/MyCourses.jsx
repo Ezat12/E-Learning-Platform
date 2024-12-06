@@ -2,6 +2,9 @@ import React from 'react'
 import img from "../../assets/Images Courses/course nodejs.webp"
 
 function MyCourses() {
+
+  
+
   return (
     <div className="p-6">
       <h1 className="text-4xl font-bold border-b pb-5">My Courses</h1>
