@@ -24,7 +24,7 @@ app.options("*", cors());
 app.use(express.json());
 
 
-app.post("webhook-checkout", express.raw({ type: "application/json" }) , webhookCheckout);
+app.post("/webhook-checkout", express.raw({ type: "application/json" }) , webhookCheckout);
 
 // Routes
 app.use("/api/v1/user", userRoute);
