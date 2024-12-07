@@ -25,7 +25,9 @@ const getCheckoutSession = asyncErrorHandler(async (req, res, next) => {
 
   const coursesStudent = studentCoursesToUser.courses;
 
-  const checkCourse = coursesStudent.some((c) => c.course._id === idCourse);
+  const checkCourse = coursesStudent.some(
+    (c) => c.course._id.toString() === idCourse
+  );
   console.log(checkCourse);
 
   if (studentCoursesToUser) {
