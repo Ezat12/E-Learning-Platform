@@ -20,8 +20,12 @@ const getCheckoutSession = asyncErrorHandler(async (req, res, next) => {
   }
 
   const studentCoursesToUser = await StudentCourse.findOne({
-    courses: [{ course: idCourse }],
+    user: req.user._id,
   });
+
+  const coursesStudent = studentCoursesToUser.courses;
+
+  console.log(coursesStudent);
 
   if (studentCoursesToUser) {
     return next(new ApiError("you already have the course", 400));
