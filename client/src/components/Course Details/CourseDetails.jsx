@@ -48,6 +48,14 @@ function CourseDetails() {
     setShowTitleDialog(lec.title);
   };
 
+  const handleByNow = async () => {
+    const response = await axios.get(
+      `${import.meta.env.VITE_SERVER_BASE_URL}/api/v1/order/checkout-session/${
+        course._id
+      } `
+    );
+  };
+
   // console.log(getIndexFreePreview);
 
   return (
@@ -127,7 +135,10 @@ function CourseDetails() {
             />
             <div className="flex items-center justify-between">
               <span className="font-bold text-xl">{course.price}$</span>
-              <button className="px-5 py-2 font-semibold text-xl w-48 bg-gray-800 text-white rounded-md">
+              <button
+                onClick={handleByNow}
+                className="px-5 py-2 font-semibold text-xl w-48 bg-gray-800 text-white rounded-md"
+              >
                 By Now
               </button>
             </div>

@@ -14,6 +14,7 @@ import { BsCheck } from "react-icons/bs";
 import Cookies from "js-cookie";
 import { DotLoader, PropagateLoader } from "react-spinners";
 import Item from "../Items Course/Item";
+import { useSelector } from "react-redux";
 // import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 function Courses() {
@@ -22,6 +23,10 @@ function Courses() {
   const [sort, setSort] = useState("sorted by");
   const [loadingState, setLoadingState] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const studentCourses = useSelector((state) => state.studentCourses);
+
+  console.log(studentCourses);
 
   useEffect(() => {
     const buildQuery = handleCreateSearchParams(filter);

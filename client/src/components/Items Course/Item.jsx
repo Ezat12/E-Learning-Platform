@@ -1,14 +1,23 @@
 /* eslint-disable react/prop-types */
 import React from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 function Item(props) {
   const { course } = props;
 
+  const studentCourses = useSelector((state) => state.studentCourses);
   const navigator = useNavigate();
+
+  const checkFoundCourse = studentCourses.some((c) => c._id === course._id);
+
   return (
     <div
-      onClick={() => navigator(`/courses/details/${course._id}`)}
+      onClick={
+        checkFoundCourse
+          ? () => navigator(`/courses/showCourse`)
+          : () => navigator(`/courses/details/${course._id}`)
+      }
       className="border rounded-md mt-4 p-2 flex items-center gap-5 cursor-pointer"
     >
       <div className="image h-full">

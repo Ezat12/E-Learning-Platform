@@ -20,7 +20,7 @@ const getCheckoutSession = asyncErrorHandler(async (req, res, next) => {
   }
 
   const studentCoursesToUser = await StudentCourse.findOne({
-    courses: [{ course: { _id: idCourse } }],
+    courses: [{ course: idCourse }],
   });
 
   if (studentCoursesToUser) {

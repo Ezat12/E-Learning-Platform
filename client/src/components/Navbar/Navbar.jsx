@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { PiGraduationCapFill } from "react-icons/pi";
 import { PiMonitorPlayLight } from "react-icons/pi";
+
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { addStudentCourse } from "../../rtk/Slice-StudentCourses/SliceStudentCourses";
 
 function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const studentCourses = useSelector((state) => state.studentCourses);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setIsAuthenticated(!!Cookies.get("auth-token"));
@@ -16,7 +22,10 @@ function Navbar() {
         `${import.meta.env.VITE_SERVER_BASE_URL}/api/v1/getCoursesStudent`,
         { headers: { Authorization: `Bearer ${Cookies.get("auth-token")}` } }
       );
-      console.log(response);
+      const studentCoursesData = response.data.data.courses;
+      studentCoursesData.map((course) => {
+        dispatch(addStudentCourse(course.course));
+      });
     };
 
     if (Cookies.get("auth-token")) {
@@ -26,6 +35,8 @@ function Navbar() {
 
   const handleLogout = () => {
     Cookies.remove("auth-token");
+    location.href = "/";
+    // location.reload();
     setIsAuthenticated(false);
   };
 
