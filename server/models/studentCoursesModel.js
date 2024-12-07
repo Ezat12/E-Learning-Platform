@@ -19,4 +19,9 @@ const schemaStudentCourses = new mongoose.Schema(
   { timestamps: true }
 );
 
+schemaStudentCourses.pre(/^find/, function (next) {
+  this.populate({ path: "courses.course" });
+  next();
+});
+
 module.exports = mongoose.model("StudentCourse", schemaStudentCourses);

@@ -3,14 +3,25 @@ import { PiGraduationCapFill } from "react-icons/pi";
 import { PiMonitorPlayLight } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
+import axios from "axios";
 
 function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  console.log("token", Cookies.get("auth-token"));
-
   useEffect(() => {
     setIsAuthenticated(!!Cookies.get("auth-token"));
+
+    const fetchDataToGetCoursesStudent = async () => {
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER_BASE_URL}/api/v1/getCoursesStudent`,
+        { headers: { Authorization: `Bearer ${Cookies.get("auth-token")}` } }
+      );
+      console.log(response);
+    };
+
+    if (Cookies.get("auth-token")) {
+      fetchDataToGetCoursesStudent();
+    }
   }, []);
 
   const handleLogout = () => {
