@@ -19,6 +19,14 @@ const getCheckoutSession = asyncErrorHandler(async (req, res, next) => {
     return next(new ApiError(`not fond course by id => ${idCourse}`));
   }
 
+  const studentCoursesToUser = await StudentCourse.findOne({
+    courses: [{ course: { _id: idCourse } }],
+  });
+
+  if (studentCoursesToUser) {
+    return next(new ApiError("you already have the course", 400));
+  }
+
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
