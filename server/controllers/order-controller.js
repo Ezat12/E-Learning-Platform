@@ -23,9 +23,9 @@ const getCheckoutSession = asyncErrorHandler(async (req, res, next) => {
     user: req.user._id,
   });
 
-  const coursesStudent = studentCoursesToUser.courses;
+  const coursesStudent = studentCoursesToUser?.courses;
 
-  const checkCourse = coursesStudent.some(
+  const checkCourse = coursesStudent?.some(
     (c) => c.course._id.toString() === idCourse
   );
 
