@@ -28,9 +28,8 @@ const getCheckoutSession = asyncErrorHandler(async (req, res, next) => {
   const checkCourse = coursesStudent.some(
     (c) => c.course._id.toString() === idCourse
   );
-  console.log(checkCourse);
 
-  if (studentCoursesToUser) {
+  if (checkCourse) {
     return next(new ApiError("you already have the course", 400));
   }
 
