@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import { addStudentCourse } from "../../rtk/Slice-StudentCourses/SliceStudentCourses";
 import { PropagateLoader } from "react-spinners";
 import { ColorRing } from "react-loader-spinner";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function MyCourses() {
@@ -40,6 +40,7 @@ function MyCourses() {
       navigator("/auth");
     }
   }, [dispatch]);
+
   return (
     <div className="p-6">
       <h1 className="text-4xl font-bold border-b pb-5">My Courses</h1>
@@ -65,9 +66,12 @@ function MyCourses() {
                     </span>
                   </span>
                 </div>
-                <button className="mt-4 text-white p-2 bg-gray-900 rounded-md text-lg w-full transition duration-75 hover:bg-gray-700">
+                <Link
+                  to={`/course-progress/${course?._id}`}
+                  className="mt-4 block text-center text-white p-2 bg-gray-900 rounded-md text-lg w-full transition duration-75 hover:bg-gray-700"
+                >
                   Start Watching
-                </button>
+                </Link>
               </div>
             );
           })}

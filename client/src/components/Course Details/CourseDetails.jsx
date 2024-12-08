@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { GrLanguage } from "react-icons/gr";
 import { FiCheckCircle } from "react-icons/fi";
 import { IoIosLock } from "react-icons/io";
@@ -9,6 +9,8 @@ import ReactPlayer from "react-player";
 import { IoPlayCircleOutline } from "react-icons/io5";
 import { FiPauseCircle } from "react-icons/fi";
 import { MdCancel } from "react-icons/md";
+import Cookies from "js-cookie";
+import { ColorRing } from "react-loader-spinner";
 import {
   CloseButton,
   Description,
@@ -16,6 +18,8 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 function CourseDetails() {
   const { courseId } = useParams();
@@ -23,19 +27,31 @@ function CourseDetails() {
   const [isOpen, setIsOpen] = useState(false);
   const [showVideoDialog, setShowVideoDialog] = useState(null);
   const [showTitleDialog, setShowTitleDialog] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  // console.log(course?.curriculum[0]?.videoUrl);
+  const studentCourses = useSelector((state) => state.studentCourses);
+  const navigator = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_BASE_URL}/api/v1/course/${courseId}`
-      );
+    const checkCourseIsAlreadyToken = studentCourses.some(
+      (course) => course._id === courseId
+    );
 
-      setCourse(response.data.data);
-    };
-    fetchData();
-  }, []);
+    console.log(checkCourseIsAlreadyToken);
+
+    if (checkCourseIsAlreadyToken) {
+      navigator(`/course-progress/${courseId}`);
+    } else {
+      const fetchData = async () => {
+        const response = await axios.get(
+          `${import.meta.env.VITE_SERVER_BASE_URL}/api/v1/course/${courseId}`
+        );
+
+        setCourse(response.data.data);
+      };
+      fetchData();
+    }
+  }, [studentCourses]);
 
   const getIndexFreePreview =
     course !== null
@@ -49,17 +65,33 @@ function CourseDetails() {
   };
 
   const handleByNow = async () => {
-    const response = await axios.get(
-      `${import.meta.env.VITE_SERVER_BASE_URL}/api/v1/order/checkout-session/${
-        course._id
-      } `
-    );
+    if (Cookies.get("auth-token")) {
+      setLoading(true);
+      const response = await axios.get(
+        `${
+          import.meta.env.VITE_SERVER_BASE_URL
+        }/api/v1/order/checkout-session/${course._id}`,
+        { headers: { Authorization: `Bearer ${Cookies.get("auth-token")}` } }
+      );
+      setLoading(false);
+      location.href = response.data.data.url;
+    } else {
+      toast("you are not login ,please login....");
+      navigator("/auth");
+    }
   };
 
   // console.log(getIndexFreePreview);
 
   return (
-    <div className="px-3 bg">
+    <div className="px-3 bg relative">
+      {loading && (
+        <div className="loading z-30 fixed w-full h-full bg-[#9ca3af63] top-0 left-0">
+          <span className="fixed top-[50%] left-[50%]">
+            <ColorRing colors={["#000", "#000", "#000", "#000", "#000"]} />
+          </span>
+        </div>
+      )}
       <div className="bg-gray-900 text-white p-5 mt-4 rounded-md">
         <h1 className="text-3xl font-bold">{course?.title}</h1>
         <p className=" font-semibold text-xl mt-4 text-gray-200">

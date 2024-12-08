@@ -15,7 +15,7 @@ function Item(props) {
     <div
       onClick={
         checkFoundCourse
-          ? () => navigator(`/courses/showCourse`)
+          ? () => navigator(`/course-progress/${course._id}`)
           : () => navigator(`/courses/details/${course._id}`)
       }
       className="border rounded-md mt-4 p-2 flex items-center gap-5 cursor-pointer"

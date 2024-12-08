@@ -11,6 +11,7 @@ import Home from "./components/Pages/Home";
 import Courses from "./components/CoursesView/Courses";
 import CourseDetails from "./components/Course Details/CourseDetails";
 import MyCourses from "./components/My-Courses/MyCourses";
+import CourseProgress from "./components/Course Progress/CourseProgress";
 
 function App() {
   return (
@@ -20,6 +21,10 @@ function App() {
         <Route path="/" element=<Home /> />
         <Route path="/courses" element=<Courses /> />
         <Route path="courses/details/:courseId" element=<CourseDetails /> />
+
+        <Route path="/course-progress/*" element={<CourseProgress />}>
+          <Route path=":courseId" element={<CourseProgress />} />
+        </Route>
 
         <Route path="/my-courses" element=<MyCourses /> />
 

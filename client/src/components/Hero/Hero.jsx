@@ -60,10 +60,18 @@ function Hero() {
                   />
                   <div className="p-2">
                     <p className="font-semibold h-12">{course.title}</p>
-                    <p className="text-gray-500 text-sm font-semibold">
-                      {course.objective}
+                    <p
+                      // style={{
+                      //   // height: "40px",
+                      //   overflow: "hidden",
+                      //   textOverflow: "ellipsis",
+                      //   whiteSpace: "nowrap",
+                      // }}
+                      className="h-[3rem] overflow-hidden text-ellipsis whitespace-normal text-gray-500 text-sm font-semibold leading-6 mt-2"
+                    >
+                      {course.description}
                     </p>
-                    <div className="flex items-center mt-3 font-bold">
+                    <div className="flex items-center mt-2 font-bold">
                       ${course.price}
                     </div>
                   </div>

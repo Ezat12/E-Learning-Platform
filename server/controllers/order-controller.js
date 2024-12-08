@@ -47,7 +47,7 @@ const getCheckoutSession = asyncErrorHandler(async (req, res, next) => {
       },
     ],
     mode: "payment",
-    success_url: `${process.env.SERVER_URL}/courses/my-courses`,
+    success_url: `${process.env.SERVER_URL}/course-progress/${req.params.courseId}`,
     cancel_url: `${process.env.SERVER_URL}/courses/details/${req.params.courseId}`,
     customer_email: req.user.userEmail,
     client_reference_id: req.params.courseId,

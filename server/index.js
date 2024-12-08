@@ -13,6 +13,7 @@ const uploadRoute = require("./routes/uploadCloudinaryRoutes");
 const courseRoute = require("./routes/courseRoutes");
 const orderRoute = require("./routes/orderRoutes");
 const studentCourseRoute = require("./routes/studentCourseRoutes");
+const progressStudentRoute = require("./routes/progressCourseRoutes");
 const ApiError = require("./utils/apiError");
 const { webhookCheckout } = require("./controllers/order-controller");
 
@@ -37,6 +38,8 @@ app.use("/api/v1/user", userRoute);
 app.use("/api/v1", userAuth);
 
 app.use("/api/v1", studentCourseRoute);
+
+app.use("/api/v1", progressStudentRoute);
 
 app.use("/api/v1/course", courseRoute);
 

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { PiGraduationCapFill } from "react-icons/pi";
 import { PiMonitorPlayLight } from "react-icons/pi";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { addStudentCourse } from "../../rtk/Slice-StudentCourses/SliceStudentCourses";
@@ -11,6 +11,8 @@ import { addStudentCourse } from "../../rtk/Slice-StudentCourses/SliceStudentCou
 function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const studentCourses = useSelector((state) => state.studentCourses);
+
+  const navigator = useNavigate();
 
   const dispatch = useDispatch();
 
