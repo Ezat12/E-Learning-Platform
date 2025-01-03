@@ -20,7 +20,7 @@ function Item(props) {
       }
       className="border rounded-md mt-4 p-2 flex items-center gap-5 cursor-pointer"
     >
-      <div className="image h-full">
+      <div className="image h-full w-[250px] ">
         <img src={course.courseImage} />
       </div>
       <div className="content flex flex-col mt-4">

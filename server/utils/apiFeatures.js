@@ -17,7 +17,7 @@ class ApiFeatures {
       dataQuery = { ...allQuery };
     }
 
-    if (Object.keys(dataQuery).length > 1) {
+    if (Object.keys(dataQuery).length >= 1) {
       Object.keys(dataQuery)?.map((item) => {
         // console.log(dataQuery[item]);
         dataQuery[item] = dataQuery[item]?.split(",");

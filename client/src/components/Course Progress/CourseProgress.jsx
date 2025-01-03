@@ -19,6 +19,7 @@ import Confetti from "react-confetti";
 
 function CourseProgress() {
   const { courseId } = useParams();
+  
   const [loading, setLoading] = useState(true);
   const [currentLecture, setCurrentLecture] = useState(null);
   const [completed, setCompleted] = useState(false);
@@ -41,7 +42,7 @@ function CourseProgress() {
         console.log(response.data.data);
         setCourses(response.data.data);
         const checkCurrentLecture =
-          response.data.data.lecturesProgress.findIndex(
+          response?.data?.data?.lecturesProgress?.findIndex(
             (lec) => !lec.completedLecture
           );
         if (checkCurrentLecture < 0) {

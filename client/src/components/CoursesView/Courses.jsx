@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 function Courses() {
   const [allCourse, setAllCourse] = useState([]);
   const [filter, setFilter] = useState({});
+  const [filterLength, setFilterLength] = useState(0);
   const [sort, setSort] = useState("sorted by");
   const [loadingState, setLoadingState] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,6 +28,7 @@ function Courses() {
   const studentCourses = useSelector((state) => state.studentCourses);
 
   console.log(studentCourses);
+  console.log("Filter Length", filterLength);
 
   useEffect(() => {
     const buildQuery = handleCreateSearchParams(filter);
@@ -45,6 +47,8 @@ function Courses() {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log("Yes");
+
       let activeFilter = filter;
 
       if (Object.keys(filter).length === 0 && Cookies.get("filter")) {
@@ -72,7 +76,7 @@ function Courses() {
 
       const response = await axios.get(
         `${
-          import.meta.env.VITE_SERVER_BASE_URL
+          import.meta.env.VITE_SERVER_BASE_URL_DEV
         }/api/v1/course${checkFilter}${checkOperation}${checkSorted}`
       );
 
@@ -82,7 +86,7 @@ function Courses() {
     };
 
     fetchData();
-  }, [filter, sort]);
+  }, [filterLength, sort]);
 
   useEffect(() => {
     return () => {
@@ -119,8 +123,11 @@ function Courses() {
         }
       }
     }
+    console.log("Copy Filter", copeFilter);
+
     Cookies.set("filter", JSON.stringify(copeFilter));
     setFilter(copeFilter);
+    setFilterLength(copeFilter?.category?.length);
   };
 
   const handleChangeSorted = (e) => {

@@ -27,7 +27,7 @@ function NewCourse() {
   useEffect(() => {
     const fetchDataGetCourse = async () => {
       const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_BASE_URL}/api/v1/course/${courseId}`
+        `${import.meta.env.VITE_SERVER_BASE_URL_DEV}/api/v1/course/${courseId}`
       );
       setCourseData(response.data.data);
       dispatch(addCourseId(response.data.data));

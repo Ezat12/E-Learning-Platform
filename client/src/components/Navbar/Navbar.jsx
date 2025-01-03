@@ -20,14 +20,20 @@ function Navbar() {
     setIsAuthenticated(!!Cookies.get("auth-token"));
 
     const fetchDataToGetCoursesStudent = async () => {
-      const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_BASE_URL}/api/v1/getCoursesStudent`,
-        { headers: { Authorization: `Bearer ${Cookies.get("auth-token")}` } }
-      );
-      const studentCoursesData = response.data.data.courses;
-      studentCoursesData.map((course) => {
-        dispatch(addStudentCourse(course.course));
-      });
+      try {
+        const response = await axios.get(
+          `${
+            import.meta.env.VITE_SERVER_BASE_URL_DEV
+          }/api/v1/getCoursesStudent`,
+          { headers: { Authorization: `Bearer ${Cookies.get("auth-token")}` } }
+        );
+        const studentCoursesData = response?.data?.data?.courses;
+        studentCoursesData?.map((course) => {
+          dispatch(addStudentCourse(course.course));
+        });
+      } catch (e) {
+        console.log(e);
+      }
     };
 
     if (Cookies.get("auth-token")) {

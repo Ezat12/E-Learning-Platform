@@ -19,7 +19,7 @@ function InstructorCourses() {
       try {
         const response = await axios.get(
           `${
-            import.meta.env.VITE_SERVER_BASE_URL
+            import.meta.env.VITE_SERVER_BASE_URL_DEV
           }/api/v1/course/course-instructor`,
           { headers: { Authorization: `Bearer ${Cookies.get("auth-token")}` } }
         );

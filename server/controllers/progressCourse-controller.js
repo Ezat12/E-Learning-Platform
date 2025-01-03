@@ -10,8 +10,6 @@ const getCurrentCourseProgress = asyncErrorHandler(async (req, res, next) => {
 
   const studentCourse = await StudentCourse.findOne({ user: req.user._id });
 
-  console.log(studentCourse);
-
   const checkPurchase = studentCourse?.courses?.some(
     (course) => course.course._id.toString() === courseId
   );
@@ -28,17 +26,20 @@ const getCurrentCourseProgress = asyncErrorHandler(async (req, res, next) => {
 
   const checkProgressCourseToUser = await ProgressCourse.findOne({
     user: req.user._id,
-  }).populate({ path: "course" });
+    course: courseId,
+  });
 
   if (!checkProgressCourseToUser) {
     const createProgressCourseToUser = await ProgressCourse.create({
       user: req.user._id,
       course: courseId,
       lecturesProgress: course.curriculum,
-    }).populate({ path: "course" });
+    })
 
     return res.status(200).json(jsend.success(createProgressCourseToUser));
   }
+
+  console.log("check", checkProgressCourseToUser);
 
   res.status(200).json(jsend.success(checkProgressCourseToUser));
 });

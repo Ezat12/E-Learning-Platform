@@ -26,6 +26,8 @@ cloudinary.v2.config({
 });
 
 const clodinaryUpload = asyncErrorHandler(async (req, res, next) => {
+  console.log(req.files);
+
   const uploadResult = await cloudinary.v2.uploader.upload(
     req.files.file[0].path,
     {
@@ -33,11 +35,12 @@ const clodinaryUpload = asyncErrorHandler(async (req, res, next) => {
     }
   );
 
+  console.log(uploadResult);
+
   res.status(200).json(jsend.success(uploadResult));
 });
 
 const cloudinaryBulkUpload = asyncErrorHandler(async (req, res, next) => {
-
   const files = req.files.files;
   let imagesUploads = [];
 

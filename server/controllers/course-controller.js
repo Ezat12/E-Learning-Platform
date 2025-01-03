@@ -20,7 +20,6 @@ const getAllCourseInstructor = (req, res, next) => {
 };
 
 const getAllCourses = asyncErrorHandler(async (req, res, next) => {
-  console.log(req.query);
 
   // let exQuery = { ...req.query };
 

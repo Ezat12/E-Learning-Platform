@@ -44,7 +44,7 @@ function CourseDetails() {
     } else {
       const fetchData = async () => {
         const response = await axios.get(
-          `${import.meta.env.VITE_SERVER_BASE_URL}/api/v1/course/${courseId}`
+          `${import.meta.env.VITE_SERVER_BASE_URL_DEV}/api/v1/course/${courseId}`
         );
 
         setCourse(response.data.data);
@@ -69,7 +69,7 @@ function CourseDetails() {
       setLoading(true);
       const response = await axios.get(
         `${
-          import.meta.env.VITE_SERVER_BASE_URL
+          import.meta.env.VITE_SERVER_BASE_URL_DEV
         }/api/v1/order/checkout-session/${course._id}`,
         { headers: { Authorization: `Bearer ${Cookies.get("auth-token")}` } }
       );
