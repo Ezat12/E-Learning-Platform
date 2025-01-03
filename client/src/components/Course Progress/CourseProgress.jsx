@@ -34,7 +34,7 @@ function CourseProgress() {
       try {
         const response = await axios.get(
           `${
-            import.meta.env.VITE_SERVER_BASE_URL_DEV
+            import.meta.env.VITE_SERVER_BASE_URL
           }/api/v1/getCurrentProgressCourse/${courseId}`,
           { headers: { Authorization: `Bearer ${Cookies.get("auth-token")}` } }
         );
@@ -74,7 +74,7 @@ function CourseProgress() {
       const fetchData = async () => {
         const response = await axios.put(
           `${
-            import.meta.env.VITE_SERVER_BASE_URL_DEV
+            import.meta.env.VITE_SERVER_BASE_URL
           }/api/v1/restCurrentProgressCourse`,
           { index: currentLecture },
           { headers: { Authorization: `Bearer ${Cookies.get("auth-token")}` } }
@@ -113,7 +113,7 @@ function CourseProgress() {
     setLoading(true);
     await axios.put(
       `${
-        import.meta.env.VITE_SERVER_BASE_URL_DEV
+        import.meta.env.VITE_SERVER_BASE_URL
       }/api/v1/restWatchAgainCourseProgress`,
       {},
       { headers: { Authorization: `Bearer ${Cookies.get("auth-token")}` } }

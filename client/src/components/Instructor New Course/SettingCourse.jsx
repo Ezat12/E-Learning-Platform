@@ -18,9 +18,7 @@ function SettingCourse() {
       formData.append("file", e.target.files[0]);
       try {
         const responseCloudinary = await axios.post(
-          `${
-            import.meta.env.VITE_SERVER_BASE_URL_DEV
-          }/api/v1/upload/upload-Cloud`,
+          `${import.meta.env.VITE_SERVER_BASE_URL}/api/v1/upload/upload-Cloud`,
           formData,
           { headers: { Authorization: `Bearer ${Cookies.get("auth-token")}` } }
         );

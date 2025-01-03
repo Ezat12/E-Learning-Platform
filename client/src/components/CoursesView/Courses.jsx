@@ -76,7 +76,7 @@ function Courses() {
 
       const response = await axios.get(
         `${
-          import.meta.env.VITE_SERVER_BASE_URL_DEV
+          import.meta.env.VITE_SERVER_BASE_URL
         }/api/v1/course${checkFilter}${checkOperation}${checkSorted}`
       );
 

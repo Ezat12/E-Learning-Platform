@@ -93,7 +93,7 @@ const createOrder = async (session) => {
     orderData: Date.now(),
   });
 
-  console.log(createOrder);
+  console.log("create order", createOrder);
 
   /// Update Course ===============
 
@@ -105,7 +105,7 @@ const createOrder = async (session) => {
     { new: true }
   );
 
-  console.log(updateCourse);
+  // console.log(updateCourse);
 
   //// Create Or Update Student Course =========
   const findStudentCourse = await StudentCourse.findOne({ user: user._id });
@@ -125,6 +125,8 @@ const createOrder = async (session) => {
         $push: { courses: { course: courseId, dateOfPurchase: Date.now() } },
       }
     );
+
+    console.log("Student Course", studentCourse);
 
     return res.status(200).json({ states: "success", data: studentCourse });
   }

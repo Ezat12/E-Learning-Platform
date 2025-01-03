@@ -111,7 +111,7 @@ export const filterOptions = {
 export const fetchDataNewCourse = async (data) => {
   try {
     const response = await axios.post(
-      `${import.meta.env.VITE_SERVER_BASE_URL_DEV}/api/v1/course`,
+      `${import.meta.env.VITE_SERVER_BASE_URL}/api/v1/course`,
       data,
       { headers: { Authorization: `Bearer ${Cookies.get("auth-token")}` } }
     );
@@ -127,7 +127,7 @@ export const fetchDataNewCourse = async (data) => {
 export const fetchDataEditCourse = async (data, courseId) => {
   try {
     const response = await axios.put(
-      `${import.meta.env.VITE_SERVER_BASE_URL_DEV}/api/v1/course/${courseId}`,
+      `${import.meta.env.VITE_SERVER_BASE_URL}/api/v1/course/${courseId}`,
       data,
       { headers: { Authorization: `Bearer ${Cookies.get("auth-token")}` } }
     );

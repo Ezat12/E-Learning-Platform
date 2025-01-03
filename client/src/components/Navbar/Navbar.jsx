@@ -22,9 +22,7 @@ function Navbar() {
     const fetchDataToGetCoursesStudent = async () => {
       try {
         const response = await axios.get(
-          `${
-            import.meta.env.VITE_SERVER_BASE_URL_DEV
-          }/api/v1/getCoursesStudent`,
+          `${import.meta.env.VITE_SERVER_BASE_URL}/api/v1/getCoursesStudent`,
           { headers: { Authorization: `Bearer ${Cookies.get("auth-token")}` } }
         );
         const studentCoursesData = response?.data?.data?.courses;
