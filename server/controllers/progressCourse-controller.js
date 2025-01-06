@@ -12,7 +12,7 @@ const getCurrentCourseProgress = asyncErrorHandler(async (req, res, next) => {
 
   console.log("Student Course", studentCourse);
 
-  const checkPurchase = studentCourse?.courses?.some(
+  const checkPurchase = studentCourse.courses.some(
     (course) => course.course._id.toString() === courseId
   );
 
