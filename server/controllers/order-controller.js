@@ -110,16 +110,18 @@ const createOrder = async (session) => {
   //// Create Or Update Student Course =========
   const findStudentCourse = await StudentCourse.findOne({ user: user._id });
 
+  console.log("findStudentCourse", findStudentCourse);
+
   if (!findStudentCourse) {
     const createStudentCourse = await StudentCourse.create({
       user: user._id,
       courses: [{ course: courseId, dateOfPurchase: Date.now() }],
     });
+    console.log("Create Student Course", createStudentCourse);
     return res
       .status(200)
       .json({ states: "success", data: createStudentCourse });
-  }
-  else {
+  } else {
     const studentCourse = await StudentCourse.updateOne(
       { user: user._id },
       {
