@@ -118,7 +118,8 @@ const createOrder = async (session) => {
     return res
       .status(200)
       .json({ states: "success", data: createStudentCourse });
-  } else {
+  }
+  else {
     const studentCourse = await StudentCourse.updateOne(
       { user: user._id },
       {
@@ -126,7 +127,7 @@ const createOrder = async (session) => {
       }
     );
 
-    console.log("Student Course", studentCourse);
+    console.log("get Student Course", studentCourse);
 
     return res.status(200).json({ states: "success", data: studentCourse });
   }
