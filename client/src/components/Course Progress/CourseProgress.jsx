@@ -19,7 +19,7 @@ import Confetti from "react-confetti";
 
 function CourseProgress() {
   const { courseId } = useParams();
-  
+
   const [loading, setLoading] = useState(true);
   const [currentLecture, setCurrentLecture] = useState(null);
   const [completed, setCompleted] = useState(false);
@@ -46,7 +46,7 @@ function CourseProgress() {
             (lec) => !lec.completedLecture
           );
         if (checkCurrentLecture < 0) {
-          console.log("Completed");
+          // console.log("Completed");
           setCompleted(true);
         }
         setCurrentLecture(checkCurrentLecture);
@@ -58,7 +58,7 @@ function CourseProgress() {
 
         setLoading(false);
         toast.error("error you are not allowed to show this course");
-        navigator("/courses");
+        // navigator("/courses");
       }
     };
     if (!Cookies.get("auth-token")) {
@@ -171,7 +171,7 @@ function CourseProgress() {
               <span>Back go to Courses Page</span>
             </h3>
             <p className="text-white font-bold text-lg">
-              {courses.course.title}
+              {courses?.course?.title}
             </p>
           </div>
           <div className="grid grid-cols-4 ">
@@ -183,7 +183,11 @@ function CourseProgress() {
                   // playing
                   onProgress={(e) => console.log(setPlay(e.played))}
                   controls={"true"}
-                  url={courses?.lecturesProgress[currentLecture]?.videoUrl}
+                  url={
+                    Object.keys(courses).length > 0
+                      ? courses?.lecturesProgress[currentLecture]?.videoUrl
+                      : ""
+                  }
                 />
               </div>
             </div>
@@ -192,7 +196,7 @@ function CourseProgress() {
                 <p className="text-lg font-bold">Course content</p>
               </div>
               <div className="flex flex-col">
-                {courses.lecturesProgress.map((lec, index) => {
+                {courses?.lecturesProgress?.map((lec, index) => {
                   return (
                     <div
                       onClick={() => handleClickLecture(index)}

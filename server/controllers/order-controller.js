@@ -47,8 +47,8 @@ const getCheckoutSession = asyncErrorHandler(async (req, res, next) => {
       },
     ],
     mode: "payment",
-    success_url: `${process.env.SERVER_URL}/course-progress/${req.params.courseId}`,
-    cancel_url: `${process.env.SERVER_URL}/courses`,
+    success_url: `${process.env.SERVER_URL}/my-courses`,
+    cancel_url: `${process.env.SERVER_URL}/courses/${req.params.courseId}`,
     customer_email: req.user.userEmail,
     client_reference_id: req.params.courseId,
   });
@@ -80,7 +80,6 @@ const webhookCheckout = asyncErrorHandler(async (req, res, next) => {
 });
 
 const createOrder = async (session) => {
-  console.log(session);
   const user = await User.findOne({ userEmail: session.customer_email });
   const courseId = session.client_reference_id;
   const price = session.amount_total / 100;
