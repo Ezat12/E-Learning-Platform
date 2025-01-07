@@ -58,7 +58,6 @@ const getCheckoutSession = asyncErrorHandler(async (req, res, next) => {
 
 const webhookCheckout = asyncErrorHandler(async (req, res, next) => {
   const sig = req.headers["stripe-signature"];
-
   let event;
 
   try {
@@ -71,9 +70,14 @@ const webhookCheckout = asyncErrorHandler(async (req, res, next) => {
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  if (event.type == "checkout.session.completed") {
-    await createOrder(event.data.object);
-    res.status(200).json({ status: "success" });
+  if (event.type === "checkout.session.completed") {
+    try {
+      const result = await createOrder(event.data.object);
+      return res.status(200).json(result);
+    } catch (err) {
+      console.error("Error in createOrder:", err);
+      return res.status(500).json({ status: "error", message: err.message });
+    }
   } else {
     return res.status(400).json({ status: "something error in checkout" });
   }
@@ -84,7 +88,6 @@ const createOrder = async (session) => {
   const courseId = session.client_reference_id;
   const price = session.amount_total / 100;
 
-  /// Create Order ======
   const createOrder = await Order.create({
     user: user._id,
     course: courseId,
@@ -92,7 +95,6 @@ const createOrder = async (session) => {
     orderData: Date.now(),
   });
 
-  /// Update Course ===============
   const updateCourse = await Course.findByIdAndUpdate(
     courseId,
     {
@@ -101,21 +103,14 @@ const createOrder = async (session) => {
     { new: true }
   );
 
-  // console.log(updateCourse);
-
-  //// Create Or Update Student Course =========
   const findStudentCourse = await StudentCourse.findOne({ user: user._id });
-
-  console.log("findStudentCourse", findStudentCourse);
 
   if (!findStudentCourse) {
     const createStudentCourse = await StudentCourse.create({
       user: user._id,
       courses: [{ course: courseId, dateOfPurchase: Date.now() }],
     });
-    return res
-      .status(200)
-      .json({ states: "success", data: createStudentCourse });
+    return { status: "success", data: createStudentCourse };
   } else {
     const studentCourse = await StudentCourse.updateOne(
       { user: user._id },
@@ -123,7 +118,7 @@ const createOrder = async (session) => {
         $push: { courses: { course: courseId, dateOfPurchase: Date.now() } },
       }
     );
-    return res.status(200).json({ states: "success", data: studentCourse });
+    return { status: "success", data: studentCourse };
   }
 };
 
