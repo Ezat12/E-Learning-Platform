@@ -10,13 +10,9 @@ const getCurrentCourseProgress = asyncErrorHandler(async (req, res, next) => {
 
   const studentCourse = await StudentCourse.findOne({ user: req.user._id });
 
-  console.log("Student Course", studentCourse);
-
   const checkPurchase = studentCourse?.courses?.some(
     (course) => course?.course?._id.toString() === courseId
   );
-
-  console.log("checkPurchase", checkPurchase);
 
   if (!checkPurchase) {
     return next(new ApiError("you are not purchase course", 404));
@@ -42,8 +38,6 @@ const getCurrentCourseProgress = asyncErrorHandler(async (req, res, next) => {
 
     return res.status(200).json(jsend.success(createProgressCourseToUser));
   }
-
-  console.log("check", checkProgressCourseToUser);
 
   res.status(200).json(jsend.success(checkProgressCourseToUser));
 });

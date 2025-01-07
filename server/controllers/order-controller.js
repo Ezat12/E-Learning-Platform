@@ -47,7 +47,7 @@ const getCheckoutSession = asyncErrorHandler(async (req, res, next) => {
       },
     ],
     mode: "payment",
-    success_url: `${process.env.SERVER_URL}/my-courses`,
+    success_url: `${process.env.SERVER_URL}/course-progress/${req.params.courseId}`,
     cancel_url: `${process.env.SERVER_URL}/courses/${req.params.courseId}`,
     customer_email: req.user.userEmail,
     client_reference_id: req.params.courseId,
@@ -72,7 +72,7 @@ const webhookCheckout = asyncErrorHandler(async (req, res, next) => {
   }
 
   if (event.type == "checkout.session.completed") {
-    createOrder(event.data.object);
+    await createOrder(event.data.object);
     res.status(200).json({ status: "success" });
   } else {
     return res.status(400).json({ status: "something error in checkout" });
@@ -92,10 +92,7 @@ const createOrder = async (session) => {
     orderData: Date.now(),
   });
 
-  console.log("create order", createOrder);
-
   /// Update Course ===============
-
   const updateCourse = await Course.findByIdAndUpdate(
     courseId,
     {
@@ -116,7 +113,6 @@ const createOrder = async (session) => {
       user: user._id,
       courses: [{ course: courseId, dateOfPurchase: Date.now() }],
     });
-    console.log("Create Student Course", createStudentCourse);
     return res
       .status(200)
       .json({ states: "success", data: createStudentCourse });
@@ -127,9 +123,6 @@ const createOrder = async (session) => {
         $push: { courses: { course: courseId, dateOfPurchase: Date.now() } },
       }
     );
-
-    console.log("get Student Course", studentCourse);
-
     return res.status(200).json({ states: "success", data: studentCourse });
   }
 };
