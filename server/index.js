@@ -24,6 +24,7 @@ app.use(cors());
 app.options("*", cors());
 app.use(compression());
 app.use("./uploads", express.static("uploads"));
+app.use(express.static(__dirname));
 
 app.post(
   "/webhook-checkout",
