@@ -15,7 +15,7 @@ const createCourse = asyncErrorHandler(async (req, res, next) => {
 });
 
 const getAllCourseInstructor = (req, res, next) => {
-  req.query = { user: req.user._id };
+  req.query = { user: req.user._id.toString() };
   next();
 };
 
