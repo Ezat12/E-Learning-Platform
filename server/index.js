@@ -23,6 +23,7 @@ connectedDB();
 app.use(cors());
 app.options("*", cors());
 app.use(compression());
+app.use("./uploads", express.static("uploads"));
 
 app.post(
   "/webhook-checkout",
