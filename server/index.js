@@ -23,7 +23,7 @@ connectedDB();
 app.use(cors());
 app.options("*", cors());
 app.use(compression());
-// app.use("./uploads", express.static("/tmp/uploads"));
+app.use("/static", express.static(path.join(__dirname, "public")));
 app.use(express.static(__dirname));
 
 app.post(
