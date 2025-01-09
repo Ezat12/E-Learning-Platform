@@ -17,6 +17,8 @@ class ApiFeatures {
       dataQuery = { ...allQuery };
     }
 
+    console.log(dataQuery);
+
     if (Object.keys(dataQuery).length >= 1) {
       Object.keys(dataQuery)?.map((item) => {
         // console.log(dataQuery[item]);
