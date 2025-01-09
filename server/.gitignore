@@ -1,4 +1,5 @@
 .env
+# *\n!*.mp4\n!*.webm\n*
 node_modules
-uploads
+# uploads
 .vercel
