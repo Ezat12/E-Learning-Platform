@@ -5,15 +5,17 @@ const jsend = require("jsend");
 const fs = require("fs");
 const path = require("path");
 
+// Use /tmp for serverless environments
+const uploadDir = path.join("/tmp", "uploads");
+
 // Ensure the upload directory exists
-const uploadDir = path.join(__dirname, "/uploads/");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true }); // Create directory if it doesn't exist
 }
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, uploadDir); // Use the upload directory
+    cb(null, uploadDir); // Use the /tmp/uploads directory
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
