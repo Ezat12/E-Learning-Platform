@@ -54,7 +54,7 @@ function Auth() {
           window.location.href = "/";
           window.location.reload();
         } else {
-          navigator("/instructor");
+          navigator("/instructor/courses");
         }
       } catch (e) {
         const error = e.response.data.errors[0].msg;
@@ -81,7 +81,7 @@ function Auth() {
           window.location.href = "/";
           window.location.reload();
         } else {
-          navigator("/instructor");
+          navigator("/instructor/courses");
         }
       } catch (e) {
         let error;

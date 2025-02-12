@@ -43,42 +43,53 @@ function MyCourses() {
 
   return (
     <div className="p-6">
-      <h1 className="text-4xl font-bold border-b pb-5">My Courses</h1>
+      <h1 className="text-2xl md:text-4xl font-bold border-b pb-5">
+        My Courses
+      </h1>
+
       {loading ? (
-        <div className="h-[60vh] flex items-center justify-center ">
+        <div className="h-[60vh] flex items-center justify-center">
           <ColorRing />
         </div>
       ) : studentCourses.length > 0 ? (
-        <div className="mt-5 grid grid-cols-4 gap-4">
-          {studentCourses.map((course, index) => {
-            return (
-              <div key={index} className="course border rounded-md p-3">
-                <div className="image w-full h-36">
-                  <img className="h-full w-full" src={course?.courseImage} />
-                </div>
-                <div className="content mt-3 flex flex-col gap-2">
-                  <p className="font-semibold text-sm">{course?.title}</p>
-                  <span className="text-gray-600 font-medium">
-                    Created by{" "}
-                    <span className="text-black">
-                      {" "}
-                      {course?.user?.userName}
-                    </span>
-                  </span>
-                </div>
-                <Link
-                  to={`/course-progress/${course?._id}`}
-                  className="mt-4 block text-center text-white p-2 bg-gray-900 rounded-md text-lg w-full transition duration-75 hover:bg-gray-700"
-                >
-                  Start Watching
-                </Link>
+        <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {studentCourses.map((course, index) => (
+            <div
+              key={index}
+              className="course border rounded-md p-3 hover:shadow-lg transition-shadow duration-200"
+            >
+              <div className="image w-full h-36">
+                <img
+                  className="h-full w-full object-cover rounded-md"
+                  src={course?.courseImage}
+                  alt={course?.title}
+                />
               </div>
-            );
-          })}
+
+              <div className="content mt-3 flex flex-col gap-2">
+                <p className="font-semibold text-sm md:text-base">
+                  {course?.title}
+                </p>
+                <span className="text-gray-600 font-medium text-sm md:text-base">
+                  Created by{" "}
+                  <span className="text-black">{course?.user?.userName}</span>
+                </span>
+              </div>
+
+              <Link
+                to={`/course-progress/${course?._id}`}
+                className="mt-4 block text-center text-white p-2 bg-gray-900 rounded-md text-sm md:text-lg w-full transition duration-75 hover:bg-gray-700"
+              >
+                Start Watching
+              </Link>
+            </div>
+          ))}
         </div>
       ) : (
-        <div className="h-[60vh] flex items-center justify-center ">
-          <span className="text-2xl font-bold">Not Found Courses</span>
+        <div className="h-[60vh] flex items-center justify-center">
+          <span className="text-xl md:text-2xl font-bold">
+            No Courses Found
+          </span>
         </div>
       )}
     </div>

@@ -37,8 +37,6 @@ function CourseDetails() {
       (course) => course._id === courseId
     );
 
-    console.log(checkCourseIsAlreadyToken);
-
     if (checkCourseIsAlreadyToken) {
       navigator(`/course-progress/${courseId}`);
     } else {
@@ -81,8 +79,6 @@ function CourseDetails() {
     }
   };
 
-  // console.log(getIndexFreePreview);
-
   return (
     <div className="px-3 bg relative">
       {loading && (
@@ -93,11 +89,13 @@ function CourseDetails() {
         </div>
       )}
       <div className="bg-gray-900 text-white p-5 mt-4 rounded-md">
-        <h1 className="text-3xl font-bold">{course?.title}</h1>
-        <p className=" font-semibold text-xl mt-4 text-gray-200">
+        <h1 className="lg:text-3xl md:text-2xl text-xl font-bold">
+          {course?.title}
+        </h1>
+        <p className=" font-semibold lg:text-xl md:text-xl text-sm   mt-4 text-gray-200">
           {course?.description}
         </p>
-        <div className="flex items-center text-sm gap-6 mt-4">
+        <div className="flex flex-wrap items-center text-sm gap-6 mt-4">
           <span>Created by {course?.user?.userName}</span>
           <span>Created on {course?.createdAt?.split("T")[0]}</span>
           <div className="flex items-center gap-1">
@@ -110,7 +108,7 @@ function CourseDetails() {
           </span>
         </div>
       </div>
-      <div className="flex gap-6 mt-5">
+      <div className="flex flex-col lg:flex-row gap-6 mt-5">
         <main className="flex-grow">
           <div className="border border-gray-300 rounded-md p-3">
             <h2 className="text-xl font-bold">What you'll learn</h2>
@@ -154,10 +152,11 @@ function CourseDetails() {
           </div>
         </main>
         <aside className="border border-gray-300 rounded-md p-3">
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 lg:w-full md:w-full  w-[300px]">
             <ReactPlayer
               // height={"300"}
               // playing
+              width={"100%"}
               controls={"true"}
               url={
                 getIndexFreePreview > -1
@@ -192,10 +191,11 @@ function CourseDetails() {
                 </p>
               ) : null}
             </Description>
-            <div className="video">
+            <div className="video lg:w-full md:w-full w-[250px]">
               <ReactPlayer
                 // height={"300"}
                 // playing
+                width={"100%"}
                 controls={"true"}
                 url={showVideoDialog ? showVideoDialog : null}
               />

@@ -13,6 +13,7 @@ import {
   handleCheckedSwitch,
 } from "../../rtk/Slice-NewCourse/SliceNewCourse";
 import VidyardPlayer from "react-player/vidyard";
+import { toast } from "react-toastify";
 
 function Curriculum() {
   const newCourse = useSelector((state) => state.newCourse);
@@ -35,20 +36,16 @@ function Curriculum() {
 
   const handleChangeVideo = async (e, index) => {
     if (e.target.files[0]) {
-      console.log(e.target.files[0]);
 
       const formData = new FormData();
       formData.append("file", e.target.files[0]);
       /// Fetch Data ==========
       try {
         const responseCloudinary = await axios.post(
-          `${
-            import.meta.env.VITE_SERVER_BASE_URL_DEV
-          }/api/v1/upload/upload-Cloud`,
+          `${import.meta.env.VITE_SERVER_BASE_URL}/api/v1/upload/upload-Cloud`,
           formData,
           { headers: { Authorization: `Bearer ${Cookies.get("auth-token")}` } }
         );
-        console.log(responseCloudinary);
 
         const data = responseCloudinary.data.data;
         // e.target.value = data.url;
@@ -59,14 +56,13 @@ function Curriculum() {
         };
         dispatch(handleChangeVideoCuu(videoData));
       } catch (e) {
-        console.log(e);
+        toast.error("some thing error")
       }
     }
   };
 
   const handleBulkUpload = async (e) => {
     const files = e.target.files;
-    console.log(files);
 
     function isNumber(value) {
       return !isNaN(Number(value));
@@ -80,7 +76,7 @@ function Curriculum() {
     }
 
     const response = await axios.post(
-      `${import.meta.env.VITE_SERVER_BASE_URL_DEV}/api/v1/upload/upload-bulk-Cloud`,
+      `${import.meta.env.VITE_SERVER_BASE_URL}/api/v1/upload/upload-bulk-Cloud`,
       formData,
       {
         headers: { Authorization: `Bearer ${Cookies.get("auth-token")}` },
@@ -104,9 +100,6 @@ function Curriculum() {
     setPlayVideo(i);
   };
 
-  // const handleProgress = (e) => {
-  //   console.log(e);
-  // };
 
   return (
     <div className="curriculum p-4 rounded-md border">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Checkbox,
   Menu,
@@ -6,16 +6,17 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/react";
-import { json, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { BiSortAlt2 } from "react-icons/bi";
 import { filterOptions } from "../Utils/New Course Utils/NewCourseUtils";
 import axios from "axios";
 import { BsCheck } from "react-icons/bs";
 import Cookies from "js-cookie";
-import { DotLoader, PropagateLoader } from "react-spinners";
+import { PropagateLoader } from "react-spinners";
 import Item from "../Items Course/Item";
 import { useSelector } from "react-redux";
-// import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { IoFilterOutline } from "react-icons/io5";
+import "./Courses.css";
 
 function Courses() {
   const [allCourse, setAllCourse] = useState([]);
@@ -24,15 +25,30 @@ function Courses() {
   const [sort, setSort] = useState("sorted by");
   const [loadingState, setLoadingState] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [showFilter, setShowFilter] = useState(false);
 
   const studentCourses = useSelector((state) => state.studentCourses);
 
-  console.log(studentCourses);
-  console.log("Filter Length", filterLength);
+  const filterRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (filterRef.current && !filterRef.current.contains(event.target)) {
+        setShowFilter(false); // Close the filter
+      }
+    };
+
+    if (showFilter) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showFilter]);
 
   useEffect(() => {
     const buildQuery = handleCreateSearchParams(filter);
-
     setSearchParams(new URLSearchParams(buildQuery));
   }, [filter]);
 
@@ -47,8 +63,6 @@ function Courses() {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("Yes");
-
       let activeFilter = filter;
 
       if (Object.keys(filter).length === 0 && Cookies.get("filter")) {
@@ -81,7 +95,6 @@ function Courses() {
       );
 
       setLoadingState(true);
-
       setAllCourse(response.data.data.courses);
     };
 
@@ -123,7 +136,6 @@ function Courses() {
         }
       }
     }
-    console.log("Copy Filter", copeFilter);
 
     Cookies.set("filter", JSON.stringify(copeFilter));
     setFilter(copeFilter);
@@ -134,13 +146,23 @@ function Courses() {
     setSort(e.target.innerHTML);
   };
 
+  const clickShoeFilter = () => {
+    setShowFilter(true);
+  };
+
   return (
     <div className="courses mt-5 px-6">
       <div className="container m-auto">
-        <h1 className=" text-2xl font-bold ">All Courses</h1>
+        <h1 className="text-2xl font-bold">All Courses</h1>
 
         <div className="flex gap-5 mt-6">
-          <aside className="w-64 space-y-5">
+          {/* Filter Sidebar */}
+          <aside
+            ref={filterRef} // Attach the ref to the filter aside
+            className={`w-64 space-y-5 lg:block filter-sidebar ${
+              showFilter ? "show" : "hide"
+            }`}
+          >
             {Object.keys(filterOptions).map((option, i) => {
               return (
                 <div key={i} className="flex gap-1 flex-col">
@@ -175,11 +197,20 @@ function Courses() {
               );
             })}
           </aside>
+
+          {/* Main Content */}
           <main className="flex-1 relative">
-            <div className="flex justify-end gap-5 items-center ">
-              <Menu as="div" className="relative inline-block text-left ">
+            <div className="flex justify-end gap-5 items-center">
+              <div
+                onClick={clickShoeFilter}
+                className="cursor-pointer lg:hidden flex items-center justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+              >
+                <IoFilterOutline size="20px" />
+                <span>Filter</span>
+              </div>
+              <Menu as="div" className="relative inline-block text-left">
                 <div>
-                  <MenuButton className="inline-flex w-full items-center  justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                  <MenuButton className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                     {sort}
                     {<BiSortAlt2 />}
                   </MenuButton>
@@ -189,10 +220,7 @@ function Courses() {
                   transition
                   className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                 >
-                  <div
-                    // onClick={handleChangeSorted}
-                    className="py-1"
-                  >
+                  <div className="py-1">
                     <MenuItem>
                       <a
                         onClick={handleChangeSorted}
@@ -224,7 +252,7 @@ function Courses() {
                       <a
                         onClick={handleChangeSorted}
                         href="#"
-                        className=" block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
+                        className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900 data-[focus]:outline-none"
                       >
                         Title: Z to A
                       </a>

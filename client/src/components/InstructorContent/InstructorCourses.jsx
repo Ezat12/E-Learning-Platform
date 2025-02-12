@@ -12,7 +12,6 @@ function InstructorCourses() {
   const [change, setChange] = useState("");
   const navigator = useNavigate();
 
-  console.log(dataInstructor);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,7 +24,6 @@ function InstructorCourses() {
         );
         setDataInstructor(response.data.data.courses);
       } catch (e) {
-        console.log(e);
 
         toast.warning(e.response.data.message);
         Swal.fire({

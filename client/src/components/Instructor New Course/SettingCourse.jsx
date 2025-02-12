@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleChangeImageAcc } from "../../rtk/Slice-NewCourse/SliceNewCourse";
 import { ProgressBar } from "react-loader-spinner";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 
 function SettingCourse() {
   const newCourse = useSelector((state) => state.newCourse);
@@ -25,10 +26,9 @@ function SettingCourse() {
 
         const data = responseCloudinary.data.data;
         setImage(data.url);
-        // console.log(data);
         dispatch(handleChangeImageAcc({ imageUrl: data.url }));
       } catch (e) {
-        console.log(e);
+        toast.error("some thing error");
       }
     }
   };

@@ -6,7 +6,6 @@ import "./css/Curriculum.css";
 
 function CourseLandingPage() {
   const newCourse = useSelector((state) => state.newCourse);
-  console.log(newCourse);
 
   const dispatch = useDispatch();
 

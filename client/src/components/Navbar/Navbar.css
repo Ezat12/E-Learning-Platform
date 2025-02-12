@@ -1,0 +1,10 @@
+@media(max-width : 730px) {
+  .navbar .nav .drop {
+    display: none;
+  }
+}
+@media(min-width : 730px) {
+  .navbar .nav .drop-outline {
+    display: none;
+  }
+}

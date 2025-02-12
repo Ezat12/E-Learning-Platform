@@ -14,7 +14,6 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { BsCheck } from "react-icons/bs";
-// import useWindowSize from "react-use/lib/useWindowSize";
 import Confetti from "react-confetti";
 
 function CourseProgress() {
@@ -26,7 +25,6 @@ function CourseProgress() {
 
   const [courses, setCourses] = useState({});
   const [play, setPlay] = useState(0);
-  // console.log(play);
   const navigator = useNavigate();
 
   useEffect(() => {
@@ -39,26 +37,21 @@ function CourseProgress() {
           { headers: { Authorization: `Bearer ${Cookies.get("auth-token")}` } }
         );
 
-        console.log(response.data.data);
         setCourses(response.data.data);
         const checkCurrentLecture =
           response?.data?.data?.lecturesProgress?.findIndex(
             (lec) => !lec.completedLecture
           );
         if (checkCurrentLecture < 0) {
-          // console.log("Completed");
           setCompleted(true);
         }
         setCurrentLecture(checkCurrentLecture);
-        // console.log(currentLecture);
 
         setLoading(false);
       } catch (e) {
-        console.log(e);
 
         setLoading(false);
         toast.error("error you are not allowed to show this course");
-        // navigator("/courses");
       }
     };
     if (!Cookies.get("auth-token")) {
@@ -85,7 +78,6 @@ function CourseProgress() {
             (lec) => !lec.completedLecture
           );
         if (checkCurrentLecture < 0) {
-          console.log("complete");
           setCompleted(true);
         } else if (
           checkCurrentLecture + 1 ===
@@ -118,7 +110,6 @@ function CourseProgress() {
       {},
       { headers: { Authorization: `Bearer ${Cookies.get("auth-token")}` } }
     );
-    // setLoading(false);
   };
 
   return (
@@ -164,7 +155,7 @@ function CourseProgress() {
         <div className="con">
           <div className="pb-3 border-b px-4 py-5 flex items-center gap-6">
             <h3
-              onClick={() => navigator("/courses")}
+              onClick={() => navigator("/my-courses")}
               className="text-black p-2 bg-white rounded-md w-fit font-medium flex items-center gap-3 cursor-pointer"
             >
               <FaChevronLeft className="mt-1" />
@@ -175,13 +166,12 @@ function CourseProgress() {
             </p>
           </div>
           <div className="grid grid-cols-4 ">
-            <div className="col-span-3">
+            <div className="lg:col-span-3 col-span-4">
               <div className="current-video w-full mt-5">
                 <ReactPlayer
                   // height={"300"}
                   width={"100%"}
                   // playing
-                  onProgress={(e) => console.log(setPlay(e.played))}
                   controls={"true"}
                   url={
                     Object.keys(courses).length > 0
@@ -191,7 +181,15 @@ function CourseProgress() {
                 />
               </div>
             </div>
-            <div className="col-span-1 bg-white h-full">
+            <div
+              style={{
+                minHeight:
+                  window.innerHeight > 1009
+                    ? "calc(100vh - 170px)"
+                    : "auto",
+              }}
+              className="lg:col-span-1 col-span-4 bg-white h-full"
+            >
               <div className="bg-white p-3 border-b-2">
                 <p className="text-lg font-bold">Course content</p>
               </div>
