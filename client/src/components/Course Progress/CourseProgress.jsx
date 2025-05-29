@@ -91,6 +91,7 @@ function CourseProgress() {
       };
 
       fetchData();
+      setPlay(0);
     }
   }, [play]);
 
