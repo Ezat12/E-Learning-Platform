@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -48,8 +48,8 @@ function CourseProgress() {
         setCurrentLecture(checkCurrentLecture);
 
         setLoading(false);
-      } catch (e) {
 
+      } catch (e) {
         setLoading(false);
         toast.error("error you are not allowed to show this course");
       }
@@ -178,15 +178,16 @@ function CourseProgress() {
                       ? courses?.lecturesProgress[currentLecture]?.videoUrl
                       : ""
                   }
+                  onEnded={() => {
+                    setPlay(1);
+                  }}
                 />
               </div>
             </div>
             <div
               style={{
                 minHeight:
-                  window.innerHeight > 1009
-                    ? "calc(100vh - 170px)"
-                    : "auto",
+                  window.innerHeight > 1009 ? "calc(100vh - 170px)" : "auto",
               }}
               className="lg:col-span-1 col-span-4 bg-white h-full"
             >
